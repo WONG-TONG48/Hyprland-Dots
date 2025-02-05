@@ -13,12 +13,7 @@ if [[ $EUID -eq 0 ]]; then
     exit 1
 fi
 
-printf "\n%.0s" {1..2}  
-echo '  ╦╔═┌─┐┌─┐╦    ╦ ╦┬ ┬┌─┐┬─┐┬  ┌─┐┌┐┌┌┬┐  ╔╦╗┌─┐┌┬┐┌─┐ '
-echo '  ╠╩╗│ ││ │║    ╠═╣└┬┘├─┘├┬┘│  ├─┤│││ ││───║║│ │ │ └─┐ '
-echo '  ╩ ╩└─┘└─┘╩═╝  ╩ ╩ ┴ ┴  ┴└─┴─┘┴ ┴┘└┘─┴┘  ═╩╝└─┘ ┴ └─┘ '
-printf "\n%.0s" {1..2} 
- 
+
 # Set some colors for output messages
 OK="$(tput setaf 2)[OK]$(tput sgr0)"
 ERROR="$(tput setaf 1)[ERROR]$(tput sgr0)"
@@ -221,30 +216,11 @@ update_editor() {
 
 EDITOR_SET=0
 # Check for neovim if installed
-if command -v nvim &> /dev/null; then
-    printf "${INFO} ${MAGENTA}neovim${RESET} is detected as installed\n"
-    read -p "${CAT} Do you want to make ${MAGENTA}neovim${RESET} the default editor? (y/N): " EDITOR_CHOICE
-    if [[ "$EDITOR_CHOICE" == "y" ]]; then
-        update_editor "nvim"
-        EDITOR_SET=1
-    fi
-fi
+
 
 printf "\n"
 
-# Check for vim if installed, but only if neovim wasn't chosen
-if [[ "$EDITOR_SET" -eq 0 ]] && command -v vim &> /dev/null; then
-    printf "${INFO} ${MAGENTA}vim${RESET} is detected as installed\n"
-    read -p "${CAT} Do you want to make ${MAGENTA}vim${RESET} the default editor? (y/N): " EDITOR_CHOICE
-    if [[ "$EDITOR_CHOICE" == "y" ]]; then
-        update_editor "vim"
-        EDITOR_SET=1
-    fi
-fi
 
-if [[ "$EDITOR_SET" -eq 0 ]]; then
-    echo "${YELLOW} Neither neovim nor vim is installed or selected as default." 2>&1 | tee -a "$LOG"
-fi
 
 printf "\n"
 
