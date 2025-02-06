@@ -266,7 +266,7 @@ printf "\n"
 
 # Ask whether to change to 12hr format
 while true; do
-  echo -e "$MAGENTA By default, KooL's Dots are configured in 24H clock format."
+  echo -e "$MAGENTA By default, the Dots are configured in 24H clock format."
   read -p "$CAT Do you want to change to 12H format or AM/PM format? (y/n): " answer
 
   # Convert the answer to lowercase for comparison
@@ -512,7 +512,6 @@ fi
 if [ -d "$BACKUP_DIR_PATH" ]; then
   echo -e "${NOTE} Restoring previous ${MAGENTA}User-Configs${RESET}... "
   echo -e "${WARN} ${WARNING}If you decide to restore the old configs, make sure to handle the updates or changes manually${RESET}."
-  echo -e "${INFO} Kindly Visit and check KooL's Hyprland-Dots GitHub page for the history of commits."
 
   for FILE_NAME in "${FILES_TO_RESTORE[@]}"; do
     BACKUP_FILE="$BACKUP_DIR_PATH/$FILE_NAME"
@@ -606,41 +605,6 @@ fi
 # additional wallpapers
 printf "\n%.0s" {1..1}
 echo "${MAGENTA}By default only a few wallpapers are copied${RESET}..."
-
-while true; do
-  read -rp "${CAT} Would you like to download additional wallpapers? ${WARN} This is more than 800 MB (y/n)" WALL
-  case $WALL in
-    [Yy])
-      echo "${NOTE} Downloading additional wallpapers..."
-      if git clone "https://github.com/JaKooLit/Wallpaper-Bank.git"; then
-          echo "${OK} Wallpapers downloaded successfully." 2>&1 | tee -a "$LOG"
-
-          # Check if wallpapers directory exists and create it if not
-          if [ ! -d ~/Pictures/wallpapers ]; then
-              mkdir -p ~/Pictures/wallpapers
-              echo "${OK} Created wallpapers directory." 2>&1 | tee -a "$LOG"
-          fi
-
-          if cp -R Wallpaper-Bank/wallpapers/* ~/Pictures/wallpapers/ >> "$LOG" 2>&1; then
-              echo "${OK} Wallpapers copied successfully." 2>&1 | tee -a "$LOG"
-              rm -rf Wallpaper-Bank 2>&1 # Remove cloned repository after copying wallpapers
-              break
-          else
-              echo "${ERROR} Copying wallpapers failed" 2>&1 | tee -a "$LOG"
-          fi
-      else
-          echo "${ERROR} Downloading additional wallpapers failed" 2>&1 | tee -a "$LOG"
-      fi
-      ;;
-  [Nn])
-      echo "${NOTE} You chose not to download additional wallpapers." 2>&1 | tee -a "$LOG"
-      break
-      ;;
-  *)
-      echo "Please enter 'y' or 'n' to proceed."
-      ;;
-  esac
-done
 
 # CLeaning up of ~/.config/ backups
 cleanup_backups() {
